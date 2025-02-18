@@ -1,0 +1,29 @@
+{
+  "name": "mediconnect",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "server": "nodemon server.js",
+    "client": "npm start --prefix ./client",
+    "dev": "concurrently \"npm run server \" \"npm run client\""
+  },
+  "keywords": [],
+  "author": "Aryan",
+  "license": "MIT",
+  "dependencies": {
+    "@ant-design/v5-patch-for-react-19": "^1.0.3",
+    "bcryptjs": "^2.4.3",
+    "colors": "^1.4.0",
+    "concurrently": "^9.1.2",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.3.4",
+    "morgan": "^1.10.0",
+    "nodemon": "^3.1.9",
+    "react-router-dom": "^7.1.5"
+  }
+}
