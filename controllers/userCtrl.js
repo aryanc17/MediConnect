@@ -36,13 +36,14 @@ const loginController = async (req, res) => {
             return res.status(200).send({ message: "Invalid Email or Password", success: false });
         }
 
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '3h' });
         res.status(200).send({ message: "Login Successfully", success: true, token });
     } catch (error) {
         console.log(error);
         res.status(500).send({ message: `Error in Login Controller ${error.message}` })
     }
 }
+
 
 const authController = async (req, res) => {
     try {
