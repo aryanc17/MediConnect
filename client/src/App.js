@@ -1,8 +1,9 @@
 import React from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import HomePage from './pages/HomePage'
-import Login from './pages/Login'
-import Register from './pages/Register'
+import HomePage from './pages/HomePage';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import ApplyDoctor from './pages/ApplyDoctor';
 import { useSelector } from 'react-redux';
 import Spinner from './components/Spinner';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -20,6 +21,12 @@ function App() {
             <ProtectedRoute>
               <HomePage />
             </ProtectedRoute>} />
+
+          <Route path='/apply-doctor' element={
+            <ProtectedRoute>
+              <ApplyDoctor />
+            </ProtectedRoute>} />
+
           <Route path='/login' element={
             <PublicRoute>
               <Login />
