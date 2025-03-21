@@ -1,12 +1,41 @@
 import React from 'react';
 import Layout from './../components/Layout';
-import { Col, Form, Input, Row, TimePicker } from 'antd';
+import { Col, Form, Input, Row, TimePicker, message } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { showLoading, hideLoading } from '../redux/features/alertSlice';
+import axios from 'axios';
 
 const ApplyDoctor = () => {
-    //handle form
-    const handleFinish = (values) => {
-        console.log(values);
+    const { user } = useSelector((state) => state.user);
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const handleFinish = async (values) => {
+        try {
+            dispatch(showLoading());
+            const res = await axios.post(
+                "/api/v1/user/apply-doctor",
+                { ...values, userId: user._id },
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("token")}`,
+                    },
+                }
+            );
+            dispatch(hideLoading());
+            if (res.data.success) {
+                message.success(res.data.success);
+                navigate("/");
+            } else {
+                message.error(res.data.success);
+            }
+        } catch (error) {
+            console.log(error);
+            message.error("Something went wrong!!");
+        }
     }
     return (
         <Layout>
@@ -62,20 +91,20 @@ const ApplyDoctor = () => {
                         </FormItem>
                     </Col>
                     <Col xs={24} md={24} lg={8}>
-                        <FormItem label="Fee per consultation" name="feePerConsultation" required rules={[{ required: true }]}>
+                        <FormItem label="Fee per consultation" name="feesPerConsultaion" required rules={[{ required: true }]}>
                             <Input type='text' placeholder='Your fee per consultation' />
                         </FormItem>
                     </Col>
                     <Col xs={24} md={24} lg={8}>
                         <FormItem label="Timings" name="timings" required >
-                            <TimePicker.RangePicker />
+                            <TimePicker.RangePicker format="hh:mm" />
                         </FormItem>
                     </Col>
+                    <Col xs={24} md={24} lg={8}></Col>
+                    <Col xs={24} md={24} lg={8}>
+                        <button className='btn btn-primary form-btn' type='submit'>Submit</button>
+                    </Col>
                 </Row>
-
-                <div className="d-flex justify-content-end">
-                    <button className='btn btn-primary' type='submit'>Submit</button>
-                </div>
             </Form>
         </Layout>
     )

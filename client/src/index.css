@@ -13,3 +13,8 @@
     z-index: 9999;
     background-color: rgba(0, 0, 0, 0.385);
 }
+
+.form-btn {
+    width: 200px !important;
+    margin-top: 30px !important;
+}
