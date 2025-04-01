@@ -15,7 +15,7 @@ export const userMenu = [
         icon: 'fa-solid fa-user-doctor'
     },
     {
-        name: 'profile',
+        name: 'Profile',
         path: '/profile',
         icon: 'fa-solid fa-user'
     },
