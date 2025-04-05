@@ -7,7 +7,7 @@ import FormItem from 'antd/es/form/FormItem';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { showLoading, hideLoading } from '../../redux/features/alertSlice';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 
 const Profile = () => {
@@ -24,9 +24,10 @@ const Profile = () => {
             const res = await axios.post(
                 "/api/v1/doctor/updateProfile",
                 {
-                    ...values, userId: user._id, timings: [
-                        moment(values.timings[0]).format('HH:mm'),
-                        moment(values.timings[1]).format('HH:mm')
+                    ...values, userId: user._id
+                    , timings: [
+                        dayjs(values.timings[0]).format('HH:mm'),
+                        dayjs(values.timings[1]).format('HH:mm')
                     ]
                 },
                 {
@@ -75,9 +76,10 @@ const Profile = () => {
             <h1>Manage Profile</h1>
             {doctor && (
                 <Form layout='vertical' onFinish={handleFinish} className='m-4' initialValues={{
-                    ...doctor, timings: [
-                        moment(doctor.timings[0], 'HH:mm'),
-                        moment(doctor.timings[1], 'HH:mm')
+                    ...doctor
+                    , timings: [
+                        dayjs(doctor.timings[0], 'HH:mm'),
+                        dayjs(doctor.timings[1], 'HH:mm')
                     ]
                 }}>
                     <h4 className="">Personal Details : </h4>
