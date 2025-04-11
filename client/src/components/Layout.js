@@ -34,7 +34,6 @@ const Layout = ({ children }) => {
             icon: 'fa-solid fa-user'
         },
     ]
-    //-------------------doctor menu--------------------------------
     //rendering menu list
     const SidebarMenu = user?.isAdmin ? adminMenu : user?.isDoctor ? doctorMenu : userMenu;
     return (

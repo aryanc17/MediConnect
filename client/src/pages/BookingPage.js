@@ -13,7 +13,7 @@ const BookingPage = () => {
     const [doctors, setDoctors] = useState([]);
     const [date, setDate] = useState("");
     const [time, setTime] = useState("");
-    const [isAvailable, setIsAvailable] = useState();
+    // const [isAvailable, setIsAvailable] = useState();
     const dispatch = useDispatch();
 
     const getUserData = async () => {
@@ -29,12 +29,14 @@ const BookingPage = () => {
             );
             if (res.data.success) {
                 setDoctors(res.data.data);
+
             }
         } catch (error) {
             console.log(error);
         }
     };
 
+    //--------------------------Booking function-----------------------------------------------------
     const handleBooking = async () => {
         try {
             dispatch(showLoading());
@@ -55,6 +57,7 @@ const BookingPage = () => {
                 }
             );
             dispatch(hideLoading());
+            console.log("Response from server:", res.data)
             if (res.data.success) {
                 message.success(res.data.message);
             }
@@ -67,7 +70,7 @@ const BookingPage = () => {
 
     useEffect(() => {
         getUserData();
-        //eslint-disable-next-line
+        // eslint-disable-next-line
     }, []);
     return (
         <Layout>
@@ -75,14 +78,14 @@ const BookingPage = () => {
             <div className="container m-2">
                 {doctors && (
                     <div>
-                        <h4>
-                            Dr.{doctors.firstName} {doctors.lastName}
-                        </h4>
-                        <h4>Fees : {doctors.feesPerCunsaltation}</h4>
-                        <h4>
+                        <h5>
+                            Dr. {doctors.firstName} {doctors.lastName}
+                        </h5>
+                        <h5>Fees : {doctors.feesPerConsultaion}</h5>
+                        <h5>
                             Timings : {doctors.timings && doctors.timings[0]} -{" "}
                             {doctors.timings && doctors.timings[1]}{" "}
-                        </h4>
+                        </h5>
                         <div className="d-flex flex-column w-50">
                             <DatePicker
                                 className="m-2"
@@ -113,3 +116,5 @@ const BookingPage = () => {
 }
 
 export default BookingPage
+
+
