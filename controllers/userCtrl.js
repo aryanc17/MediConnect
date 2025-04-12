@@ -3,6 +3,11 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const doctorModel = require('../models/doctorModel');
 const appointmentModel = require('../models/appointmentModel');
+const dayjs = require('dayjs');
+const customParseFormat = require("dayjs/plugin/customParseFormat");
+const utc = require("dayjs/plugin/utc");
+dayjs.extend(customParseFormat);
+dayjs.extend(utc);
 
 //Register controller
 const registerController = async (req, res) => {
@@ -173,6 +178,8 @@ const getAllDoctorsController = async (req, res) => {
 //Book Appointment
 const bookAppointmentController = async (req, res) => {
     try {
+        req.body.date = dayjs(req.body.date, "DD-MM-YYYY").toISOString();
+        req.body.time = dayjs(req.body.time, "HH:mm").toISOString();
         req.body.status = "pending";
         const newAppointment = new appointmentModel(req.body);
         await newAppointment.save();
@@ -199,4 +206,44 @@ const bookAppointmentController = async (req, res) => {
     }
 }
 
-module.exports = { loginController, registerController, authController, applyDoctorController, getAllNotificationController, deleteAllNotificationController, getAllDoctorsController, bookAppointmentController }; 
+//Booking Availability
+const bookingAvailabilityController = async (req, res) => {
+    try {
+        const date = dayjs(req.body.date, "DD-MM-YYYY").toISOString();
+        const fromTime = dayjs(req.body.time, "HH:mm")
+            .subtract(1, "hour")
+            .toISOString();
+        const toTime = dayjs(req.body.time, "HH:mm")
+            .add(1, "hour")
+            .toISOString();
+        const doctorId = req.body.doctorId;
+        const appointments = await appointmentModel.find({
+            doctorId,
+            date,
+            time: {
+                $gte: fromTime, $lte: toTime
+            }
+        })
+        if (appointments.length > 0) {
+            return res.status(200).send({
+                message: "Appointments not available this time",
+                success: true
+            })
+        }
+        else {
+            return res.status(200).send({
+                message: "Appointments available",
+                success: true
+            })
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({
+            success: true,
+            error,
+            message: "Error in booking availability"
+        })
+    }
+}
+
+module.exports = { loginController, registerController, authController, applyDoctorController, getAllNotificationController, deleteAllNotificationController, getAllDoctorsController, bookAppointmentController, bookingAvailabilityController }; 
