@@ -48,7 +48,6 @@ const Profile = () => {
             message.error("Something went wrong!!");
         }
     }
-    //---------------------Update doc---------------------
 
     //getDoctor info
     const getDoctorInfo = async () => {
